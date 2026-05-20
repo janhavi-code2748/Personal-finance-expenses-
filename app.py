@@ -23,7 +23,26 @@ def home():
 
         expenses.append(expense)
 
-    return render_template("index.html", expenses=expenses)
+    # Calculate total spending
+    total = sum(e["amount"] for e in expenses)
+
+    # Calculate category summary
+    summary = {}
+
+    for e in expenses:
+        cat = e["category"]
+
+        if cat in summary:
+            summary[cat] += e["amount"]
+        else:
+            summary[cat] = e["amount"]
+
+    return render_template(
+        "index.html",
+        expenses=expenses,
+        total=total,
+        summary=summary
+    )
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    app.run(debug=True, host="0.0.0.0"
